@@ -1,0 +1,62 @@
+<%
+oRequestQuery = Request.Query;
+
+auth_type = '';
+if(Request.Query.HasProperty('user_login') && Request.Query.HasProperty('user_password')) {
+	oAuth = {
+		auth_type: 'cookie',
+		set_auth: '1',
+		user_login: String(oRequestQuery.user_login),
+		user_password: String(oRequestQuery.user_password)
+	}
+}
+else if(Request.Header.GetOptProperty('Authorization') !== undefined) {
+	oAuth = {
+		auth_type: 'basic',
+		set_auth: '1',
+	}
+}
+oUserInit = tools_web.user_init( Request, (oAuth) );
+
+resp = {
+	access: oUserInit.access,
+	error_text: oUserInit.error_text,
+	auth_type: oUserInit.auth_type,
+	//auth_login: oUserInit.auth_login,
+	//curHost: tools.object_to_text(oUserInit.curHost, 'json'), 
+	//curSite: tools.object_to_text(oUserInit.curSite, 'json'),
+	curEnvUrl: oUserInit.curEnvUrl,
+};
+if(oUserInit.access) {
+	curUsers = ArraySelectAll( XQuery( 'for $elem in collaborators where $elem/lowercase_login=' + XQueryLiteral(StrLowerCase(oUserInit.auth_login)) + ' return $elem' ) );
+	curUser = ArrayOptFirstElem(curUsers);
+	if(curUser !== undefined) {
+		resp.curUser = {
+			id: curUser.id,
+			code: curUser.code,
+			fullname: curUser.fullname,
+			login: curUser.login,
+			email: curUser.email,
+			phone: curUser.phone,
+			mobile_phone: curUser.mobile_phone,
+			birth_date: curUser.birth_date,
+			sex: curUser.sex,
+			pict_url: curUser.pict_url,
+			position_name: curUser.position_name,
+			position_parent_name: curUser.position_parent_name,
+			org_name: curUser.org_name,
+			position_date: curUser.position_date,
+			hire_date: curUser.hire_date
+		};
+	}
+	else {
+		resp.curUser = null;
+	};
+}
+else {
+	resp.curUser = null;
+}
+
+Response.Write(EncodeJson(resp));
+%>
+

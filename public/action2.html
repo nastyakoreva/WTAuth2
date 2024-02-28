@@ -1,0 +1,69 @@
+<%
+var oFormFields = [
+      {
+        name: "user_login",
+        value: "NaumtcevSS@suek.ru",
+      },
+      {
+        name: "user_password",
+        value: "yL2xR1pU",
+      },
+    ]
+var curHost = {
+    "id": "7286616772142103225",
+    "code": "http_cookie",
+    "name": "HTTP_COOKIE — localhost:80",
+    "hostname": "localhost",
+    "port": 80,
+    "portal_type": "default",
+    "referer_host_path": "",
+    "site_id": "7168687548489339247",
+    "mobile_app_config_id": "7059272779765198692",
+    "portal_auth_type": "cookie",
+    "auth_login_eval": "",
+    "auth_pass_eval": "",
+    "auth_prev_eval": "",
+    "login_case_sensitive": false,
+    "login_domen_sensitive": false,
+    "auth_cookie_login": "user_login",
+    "auth_cookie_pass": "user_password",
+    "auth_cookie_domain": "",
+    "auth_cookie_period": null,
+    "redirect_login": "",
+    "redirect_url_eval": "",
+    "disp_login_pass": false,
+    "allow_lds_auth": false,
+    "header_hosts": {},
+    "register_logged_in": false,
+    "is_std": false,
+    "changed": false,
+    "comment": "",
+    "doc_info": {
+        "creation": {
+            "user_login": "user1",
+            "user_id": "6148914691236517121",
+            "date": "2023-10-06T02:15:17+00:00",
+            "app_instance_id": ""
+        },
+        "modification": {
+            "user_login": "samvel",
+            "user_id": "7333123562331206175",
+            "date": "2024-02-15T10:56:36+00:00"
+        },
+        "invariable": false
+    },
+    "custom_elems": {},
+    "custom_report_fictions": {}
+}
+
+oRequestQuery = Request.Query;
+
+	
+	oLogin = ArrayOptFind( oFormFields, "This.name == 'user_login'" );
+	oPassword = ArrayOptFind( oFormFields, "This.name == 'user_password'" );
+	oRequestQuery = { curHost.auth_cookie_login: ( oLogin != undefined ? oLogin.value : "" ), curHost.auth_cookie_pass: ( oPassword != undefined ? oPassword.value : "" ), 'set_auth': '1' }
+
+	oUserInit = tools_web.user_init( Request, oRequestQuery );
+%>
+asd
+
