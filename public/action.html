@@ -1,13 +1,18 @@
 <%
-oRequestQuery = Request.Query;
+//-- dev
+Request.AddRespHeader( "Access-Control-Allow-Origin", "http://localhost:3000" ); 
+Request.AddRespHeader( "Access-Control-Allow-Credentials", "true" ); 
+Request.AddRespHeader( "Access-Control-Allow-Methods", "GET,PUT,POST,DELETE,PATCH,OPTIONS" );
+Request.AddRespHeader( "Access-Control-Allow-Headers", "Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers" );
+//--
 
 auth_type = '';
 if(Request.Query.HasProperty('user_login') && Request.Query.HasProperty('user_password')) {
 	oAuth = {
 		auth_type: 'cookie',
 		set_auth: '1',
-		user_login: String(oRequestQuery.user_login),
-		user_password: String(oRequestQuery.user_password)
+		user_login: String(Request.Query.user_login),
+		user_password: String(Request.Query.user_password)
 	}
 }
 else if(Request.Header.GetOptProperty('Authorization') !== undefined) {
